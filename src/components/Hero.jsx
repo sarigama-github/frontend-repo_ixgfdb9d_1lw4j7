@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react'
-import { motion } from 'framer-motion'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
 
 // Lazy-load Spline so a network error won't crash the page
@@ -56,6 +56,10 @@ function VisualFallback() {
 }
 
 export default function Hero() {
+  const { scrollYProgress } = useScroll()
+  const y = useTransform(scrollYProgress, [0, 0.5], [0, -60])
+  const opacity = useTransform(scrollYProgress, [0, 0.4], [1, 0.75])
+
   return (
     <section className="relative overflow-hidden pt-28">
       <div className="absolute inset-0 pointer-events-none">
@@ -66,24 +70,27 @@ export default function Hero() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-10 items-center">
         <div className="relative z-10">
           <motion.h1
+            style={{ y, opacity }}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-slate-900"
+            className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-slate-900 dark:text-white"
           >
             Advancing Professionals. Empowering Communities.
           </motion.h1>
 
           <motion.p
+            style={{ y, opacity }}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="mt-6 text-lg text-slate-600 max-w-xl"
+            className="mt-6 text-lg text-slate-600 max-w-xl dark:text-slate-300"
           >
             PPRO connects consultants, educators, and policymakers through trusted programs, resources, and a vibrant network.
           </motion.p>
 
           <motion.div
+            style={{ y, opacity }}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
@@ -100,7 +107,7 @@ export default function Hero() {
               href="https://office.ppro.org"
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center justify-center h-12 px-6 rounded-xl font-semibold border border-amber-400 text-amber-700 bg-amber-50 hover:bg-amber-100"
+              className="inline-flex items-center justify-center h-12 px-6 rounded-xl font-semibold border border-amber-400 text-amber-700 bg-amber-50 hover:bg-amber-100 dark:text-amber-300 dark:border-amber-700 dark:bg-amber-900/20 dark:hover:bg-amber-900/30"
             >
               Visit PPRO Office
             </a>
@@ -112,13 +119,13 @@ export default function Hero() {
                 <img key={i} src={src} alt="Member" className="h-9 w-9 rounded-full ring-2 ring-white object-cover" />
               ))}
             </div>
-            <div className="text-sm text-slate-600">
+            <div className="text-sm text-slate-600 dark:text-slate-400">
               Trusted by 12k+ members across 40+ institutions
             </div>
           </div>
         </div>
 
-        <div className="relative aspect-[4/3] rounded-2xl bg-gradient-to-br from-sky-50 to-amber-50 ring-1 ring-slate-200 overflow-hidden">
+        <div className="relative aspect-[4/3] rounded-2xl bg-gradient-to-br from-sky-50 to-amber-50 ring-1 ring-slate-200 overflow-hidden dark:from-slate-900 dark:to-slate-800 dark:ring-slate-800">
           <SplineErrorBoundary fallback={<VisualFallback /> }>
             <Suspense fallback={<VisualFallback /> }>
               {/* If the Spline scene is not publicly accessible, we gracefully show a fallback */}
