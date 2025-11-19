@@ -1,6 +1,59 @@
+import React, { Suspense } from 'react'
 import { motion } from 'framer-motion'
-import Spline from '@splinetool/react-spline'
 import { ArrowRight } from 'lucide-react'
+
+// Lazy-load Spline so a network error won't crash the page
+const Spline = React.lazy(() => import('@splinetool/react-spline'))
+
+class SplineErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = { hasError: false }
+  }
+  static getDerivedStateFromError() {
+    return { hasError: true }
+  }
+  componentDidCatch() {}
+  render() {
+    if (this.state.hasError) {
+      return this.props.fallback
+    }
+    return this.props.children
+  }
+}
+
+function VisualFallback() {
+  return (
+    <div className="absolute inset-0">
+      <div className="absolute -top-24 -right-24 h-80 w-80 rounded-full bg-sky-300/30 blur-3xl" />
+      <div className="absolute -bottom-36 -left-10 h-96 w-96 rounded-full bg-amber-300/30 blur-3xl" />
+      <motion.div
+        aria-hidden
+        className="absolute inset-0"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+      >
+        <svg viewBox="0 0 400 300" className="w-full h-full opacity-70">
+          <defs>
+            <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="#0ea5e9"/>
+              <stop offset="100%" stopColor="#f59e0b"/>
+            </linearGradient>
+          </defs>
+          <g fill="none" stroke="url(#g1)" strokeWidth="0.6">
+            {Array.from({ length: 60 }).map((_, i) => (
+              <path key={i} d={`M0 ${5 + i*5} C 100 ${i*3}, 300 ${150 - i*2}, 400 ${5 + i*5}`} />
+            ))}
+          </g>
+        </svg>
+      </motion.div>
+      <div className="absolute bottom-3 right-4 text-[11px] text-slate-500/80">
+        Interactive visual unavailable — showing fallback
+      </div>
+    </div>
+  )
+}
 
 export default function Hero() {
   return (
@@ -66,9 +119,14 @@ export default function Hero() {
         </div>
 
         <div className="relative aspect-[4/3] rounded-2xl bg-gradient-to-br from-sky-50 to-amber-50 ring-1 ring-slate-200 overflow-hidden">
-          <div className="absolute inset-0 opacity-90">
-            <Spline scene="https://prod.spline.design/q3N4W4kLxN7i4I1C/scene.splinecode" />
-          </div>
+          <SplineErrorBoundary fallback={<VisualFallback /> }>
+            <Suspense fallback={<VisualFallback /> }>
+              {/* If the Spline scene is not publicly accessible, we gracefully show a fallback */}
+              <div className="absolute inset-0 opacity-90">
+                <Spline scene="https://prod.spline.design/q3N4W4kLxN7i4I1C/scene.splinecode" />
+              </div>
+            </Suspense>
+          </SplineErrorBoundary>
         </div>
       </div>
     </section>
