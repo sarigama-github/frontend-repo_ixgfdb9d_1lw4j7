@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from 'react'
-import { Star } from 'lucide-react'
+import { Star, Quote } from 'lucide-react'
 
 const testimonials = [
   {
@@ -71,16 +71,22 @@ export default function Testimonials() {
 
         <div ref={ref} className={`mt-10 grid md:grid-cols-3 gap-6 transition-all duration-700 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
           {testimonials.map((t, idx) => (
-            <blockquote
+            <figure
               key={t.name}
               style={{ transitionDelay: `${idx * 60}ms` }}
-              className="p-6 rounded-xl border border-slate-200 bg-slate-50/50 dark:bg-slate-900 dark:border-slate-800"
+              className="group relative rounded-2xl p-[1px] bg-gradient-to-br from-sky-200/60 via-slate-200/40 to-amber-200/60 dark:from-sky-500/20 dark:via-slate-800 dark:to-amber-500/20 shadow-sm hover:shadow-lg transition-transform duration-300 hover:-translate-y-0.5"
             >
-              <p className="text-slate-700 dark:text-slate-200">“{t.quote}”</p>
-              <footer className="mt-4 text-sm font-medium text-slate-900 dark:text-white">{t.name}
-                <span className="block text-slate-500 dark:text-slate-400 font-normal">{t.role}</span>
-              </footer>
-            </blockquote>
+              <div className="rounded-[15px] overflow-hidden bg-white dark:bg-slate-950 border border-white/60 dark:border-white/5 backdrop-blur supports-[backdrop-filter]:bg-white/90 dark:supports-[backdrop-filter]:bg-slate-950/80 p-6">
+                <div className="flex items-start gap-3">
+                  <div className="shrink-0 h-9 w-9 rounded-full bg-gradient-to-tr from-sky-500 to-amber-400 opacity-90 group-hover:opacity-100" />
+                  <blockquote className="text-slate-700 dark:text-slate-200 leading-relaxed">“{t.quote}”</blockquote>
+                </div>
+                <figcaption className="mt-4 text-sm font-medium text-slate-900 dark:text-white">
+                  {t.name}
+                  <span className="block text-slate-500 dark:text-slate-400 font-normal">{t.role}</span>
+                </figcaption>
+              </div>
+            </figure>
           ))}
         </div>
       </div>

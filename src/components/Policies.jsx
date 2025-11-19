@@ -43,22 +43,29 @@ export default function Policies() {
             <div
               key={p.id}
               style={{ transitionDelay: `${idx * 60}ms` }}
-              className="p-6 rounded-xl bg-white border border-slate-200 hover:border-amber-200 shadow-sm hover:shadow-md transition dark:bg-slate-950 dark:border-slate-800 dark:hover:border-amber-800/40"
+              className="group relative rounded-2xl p-[1px] bg-gradient-to-br from-amber-200/60 via-slate-200/40 to-sky-200/60 dark:from-amber-500/20 dark:via-slate-800 dark:to-sky-500/20 shadow-sm hover:shadow-lg transition-transform duration-300 hover:-translate-y-0.5"
             >
-              <div className="flex items-center gap-3">
-                <p.icon className="text-amber-600 dark:text-amber-400" size={20} />
-                <div className="font-semibold text-slate-900 dark:text-white">{p.name}</div>
-              </div>
-              <div className="mt-1 text-sm text-slate-500 dark:text-slate-400">{p.version} • {p.size}</div>
-              <div className="mt-5 flex items-center gap-3">
-                <button className="flex-1 inline-flex items-center justify-center h-10 rounded-lg border border-slate-200 text-slate-700 font-medium hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800">
-                  <Eye size={16} className="mr-2" />
-                  View
-                </button>
-                <button className="flex-1 inline-flex items-center justify-center h-10 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 text-white font-medium hover:shadow">
-                  <Download size={16} className="mr-2" />
-                  Download
-                </button>
+              <div className="rounded-[15px] overflow-hidden bg-white dark:bg-slate-950 border border-white/60 dark:border-white/5 backdrop-blur supports-[backdrop-filter]:bg-white/90 dark:supports-[backdrop-filter]:bg-slate-950/80 p-5">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    <p.icon className="text-amber-600 dark:text-amber-400" size={22} />
+                    <div>
+                      <div className="font-semibold text-slate-900 dark:text-white leading-tight">{p.name}</div>
+                      <div className="mt-0.5 text-sm text-slate-500 dark:text-slate-400">{p.version} • {p.size}</div>
+                    </div>
+                  </div>
+                  <div className="h-8 w-8 rounded-full bg-gradient-to-tr from-amber-500 to-sky-400 opacity-80 group-hover:opacity-100 blur-[2px]" />
+                </div>
+                <div className="mt-5 grid grid-cols-2 gap-3">
+                  <button className="inline-flex items-center justify-center h-10 rounded-lg border border-slate-200 text-slate-700 font-medium hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800">
+                    <Eye size={16} className="mr-2" />
+                    View
+                  </button>
+                  <button className="inline-flex items-center justify-center h-10 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 text-white font-medium shadow-sm hover:shadow">
+                    <Download size={16} className="mr-2" />
+                    Download
+                  </button>
+                </div>
               </div>
             </div>
           ))}
